@@ -24,7 +24,7 @@ SU::API::Nexus-Card-Ordering
     $payload->{Extra1} = "Cool field";
     $payload->{DeliveryContact} = "John Doe";
     $payload->{DeliveryAddress} = "Gullerasen Västabäcksgatu 95";
-    $payload->{DeliveryZipCode} = 66203};
+    $payload->{DeliveryZipCode} = 66203;
     $payload->{DeliveryCity} =  SVANSKOG;
 
     my $response = $nexus->do_request("POST","order","",$payload);
