@@ -1,15 +1,15 @@
 =head1 NAME
 
-SU::API::Nexus-Card-Ordering
+SU::API::NexusCardOrdering
 
 =head1 SYNOPSIS
 
     use strict;
     use warnings;
 
-    use SU::API::Nexus-Card-Ordering;
+    use SU::API::NexusCardOrdering;
 
-    my $nexus = new SU::API::Nexus-Card-Ordering;
+    my $nexus = new SU::API::NexusCardOrdering;
 
     $nexus->login("username","password");
 
@@ -46,7 +46,7 @@ Module used to integrate with the REST API that Nexus provides for card ordering
 
 =item new ()
 
-Returns a new SU::API::Nexus-Card-Ordering object.
+Returns a new SU::API::NexusCardOrdering object.
 
 =back
 
