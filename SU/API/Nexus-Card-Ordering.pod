@@ -23,7 +23,7 @@ SU::API::Nexus-Card-Ordering
 
     $payload->{Extra1} = "Cool field";
     $payload->{DeliveryContact} = "John Doe";
-    $payload->{DeliveryAddress} = "Gulleråsen Västabäcksgatu 95";
+    $payload->{DeliveryAddress} = "Gullerasen Västabäcksgatu 95";
     $payload->{DeliveryZipCode} = 66203};
     $payload->{DeliveryCity} =  SVANSKOG;
 
