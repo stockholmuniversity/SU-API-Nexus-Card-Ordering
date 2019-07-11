@@ -1,4 +1,4 @@
-package SU::API::Nexus;
+package SU::API::NexusCardOrdering;
 
 use strict;
 use warnings;
