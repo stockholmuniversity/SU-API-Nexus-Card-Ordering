@@ -1,1 +1,1 @@
-SU/API/Nexus-Card-Ordering.pod
+SU/API/NexusCardOrdering.pod
