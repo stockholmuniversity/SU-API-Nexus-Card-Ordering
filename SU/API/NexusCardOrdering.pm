@@ -3,12 +3,12 @@ package SU::API::NexusCardOrdering;
 use strict;
 use warnings;
 
+use Date::Parse;
 use HTTP::Request;
 use JSON;
 use LWP::UserAgent;
 use POSIX qw(strftime);
 use URI::Escape;
-use Date::Parse;
 
 sub new
 {
