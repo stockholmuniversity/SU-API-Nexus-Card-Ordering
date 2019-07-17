@@ -6,6 +6,7 @@ use warnings;
 use HTTP::Request;
 use JSON;
 use LWP::UserAgent;
+use POSIX qw(strftime);
 use URI::Escape;
 use Date::Parse;
 
@@ -20,6 +21,15 @@ sub new
     $self->{url}          = "https://cards-api.nexusgroup.com";
     $self->{ua}           = LWP::UserAgent->new;
     $self->{login_status} = "not logged in";
+
+    my $days_to_look_back = 14;
+    my $time              = time();
+    $self->{lookback} = strftime(
+                                 "%Y-%m-%d",
+                                 localtime(
+                                     $time - (60 * 60 * 24 * $days_to_look_back)
+                                 )
+                                );
 
     bless $self, $class;
     return $self;
@@ -142,6 +152,82 @@ sub login
         return undef;
     }
     return $self->{token};
+}
+
+sub _fetch_orderids
+{
+
+    my ($self) = @_;
+
+    my $date = $self->{lookback};
+
+    my $page  = 1;
+    my $count = 0;
+    my $foundCount;
+    my $maxPage = 0;
+    $self->{orders} = undef;
+
+    while ($maxPage != $page)
+    {
+
+        my $response = $self->do_request("GET", "order/list",
+                                         "createdDate=$date&page=$page");
+
+        if ($self->request_code == 404)
+        {
+            warn "No orders found from $date";
+            $self->{orders} = {};
+        }
+        elsif ($self->request_code != 200)
+        {
+            die "unknown response code $self->request_code";
+        }
+
+        $maxPage = $response->{maxPage};
+        if (!$maxPage)
+        {
+            die "maxPage is missing";
+        }
+        my $orders = $response->{orders};
+        if (!$orders)
+        {
+            die "order is missing";
+        }
+
+        for my $order (@$orders)
+        {
+            my $CustomersUniqueID = $order->{CustomersUniqueID};
+            my $orderId           = $order->{orderId};
+            if ($CustomersUniqueID && $orderId)
+            {
+                $self->{orders}->{$CustomersUniqueID}->{orderId} = $orderId;
+            }
+        }
+        $page++;
+    }
+    $self->{fetched_orderids} = 1;
+}
+
+sub get_orderid
+{
+    my ($self, $id) = @_;
+
+    if (!$self->{fetched_orderids})
+    {
+        $self->_fetch_orderids();
+    }
+    my $orderId = $self->{orders}->{$id}->{orderId};
+    return $orderId;
+}
+
+sub set_lookback
+{
+    my ($self, $date) = @_;
+
+    $self->{lookback}         = $date;
+    $self->{fetched_orderids} = undef;
+    $self->{orders}           = {};
+    return;
 }
 
 sub logout
