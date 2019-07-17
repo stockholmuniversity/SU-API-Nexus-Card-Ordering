@@ -164,12 +164,10 @@ sub _fetch_orderids
     my $page  = 1;
     my $count = 0;
     my $foundCount;
-    my $maxPage = 0;
     $self->{orders} = undef;
 
-    while ($maxPage != $page)
+    while ()
     {
-
         my $response = $self->do_request("GET", "order/list",
                                          "createdDate=$date&page=$page");
 
@@ -183,7 +181,7 @@ sub _fetch_orderids
             die "unknown response code $self->request_code";
         }
 
-        $maxPage = $response->{maxPage};
+        my $maxPage = $response->{maxPage};
         if (!$maxPage)
         {
             die "maxPage is missing";
@@ -202,6 +200,11 @@ sub _fetch_orderids
             {
                 $self->{orders}->{$CustomersUniqueID}->{orderId} = $orderId;
             }
+        }
+
+        if ($maxPage == $page)
+        {
+            last;
         }
         $page++;
     }
