@@ -137,7 +137,8 @@ sub login
 
     my $response = $self->do_request("POST", "login", "", $data);
 
-    if ($self->request_code == 201)
+    my $code = $self->request_code;
+    if ($code == 201)
     {
         $self->{login_status} = "login successful";
         $self->{token}        = $response->{token};
@@ -171,15 +172,15 @@ sub _fetch_orderids
         my $response = $self->do_request("GET", "order/list",
                                          "createdDate=$date&page=$page");
 
-        if ($self->request_code == 404)
+        my $code = $self->request_code;
+        if ($code == 404)
         {
             warn "No orders found from $date";
             $self->{orders} = {};
         }
-        elsif ($self->request_code != 200)
+        elsif ($code != 200)
         {
-            die "unknown response code $self->request_code";
-        }
+            die "unknown response code $code"
 
         my $maxPage = $response->{maxPage};
         if (!$maxPage)
