@@ -181,6 +181,7 @@ sub _fetch_orderids
         elsif ($code != 200)
         {
             die "unknown response code $code"
+        }
 
         my $maxPage = $response->{maxPage};
         if (!$maxPage)
