@@ -237,7 +237,7 @@ sub set_lookback
 sub logout
 {
     my ($self) = @_;
-    $self->{access_token} = undef;
+    $self->{token} = undef;
 }
 
 sub request_code
@@ -255,7 +255,7 @@ sub request_status_line
 sub logged_in
 {
     my ($self) = @_;
-    return $self->{access_token};
+    return $self->{token};
 }
 
 sub login_status
@@ -267,11 +267,11 @@ sub login_status
 sub DESTROY
 {
     my ($self) = @_;
-    if ($self->{ua} && $self->{access_token})
+    if ($self->{ua} && $self->{token})
     {
         $self->logout();
     }
-    elsif ($self->{access_token})
+    elsif ($self->{token})
     {
         warn "Automatic logout failed";
     }
