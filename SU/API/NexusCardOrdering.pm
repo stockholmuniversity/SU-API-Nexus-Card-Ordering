@@ -72,10 +72,6 @@ sub do_request
     }
     $self->{res} = $self->{ua}->request($req);
 
-    if (!$self->{res}->is_success)
-    {
-        return undef;
-    }
     my $content;
     if ($self->{res}->code == 204)
     {
@@ -85,7 +81,10 @@ sub do_request
     {
         $content = $self->{res}->content;
     }
-    my $json_result = decode_json($content);
+    my $json_result;
+    eval {
+        $json_result = decode_json($content);
+    }
 
     if ($json_result)
     {
