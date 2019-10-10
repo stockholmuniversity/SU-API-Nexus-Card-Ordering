@@ -84,7 +84,7 @@ sub do_request
     my $json_result;
     eval {
         $json_result = decode_json($content);
-    }
+    };
 
     if ($json_result)
     {
