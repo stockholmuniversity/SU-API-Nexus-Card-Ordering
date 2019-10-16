@@ -22,7 +22,7 @@ sub new
     $self->{ua}           = LWP::UserAgent->new;
     $self->{login_status} = "not logged in";
 
-    my $days_to_look_back = 14;
+    my $days_to_look_back = 7;
     my $time              = time();
     $self->{lookback} = strftime(
                                  "%Y-%m-%d",
