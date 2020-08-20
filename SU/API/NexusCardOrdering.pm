@@ -224,6 +224,25 @@ sub get_orderid
     return $orderId;
 }
 
+sub get_order
+{
+    my ($self, $id) = @_;
+
+    my $response = $self->do_request("GET", "order/$id");
+
+    my $code = $self->request_code;
+    if ($code == 404)
+    {
+        warn "No orders not found";
+        return undef;
+    }
+    elsif ($code != 200)
+    {
+        die "unknown response code $code"
+    }
+    return $response;
+}
+
 sub set_lookback
 {
     my ($self, $date) = @_;
